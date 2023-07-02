@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CommentEntity } from '../entities/comment.entity';
 import { CreateCommentDto } from '../dto/create-comment.dto';
@@ -13,6 +17,12 @@ export class CommentRepository {
     userId: number,
     postId: number,
   ): Promise<CommentEntity> {
+    const post = await this.dbContext.post.findUnique({
+      where: { id: postId },
+    });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
     return this.dbContext.comment.create({
       data: {
         ...createCommentDto,

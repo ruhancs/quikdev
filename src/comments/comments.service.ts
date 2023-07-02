@@ -32,7 +32,12 @@ export class CommentsService {
     );
   }
 
-  remove(requestUser: any, id: number) {
+  async remove(requestUser: any, id: number) {
+    const comment = await this.commentRepository.findCommentById(id);
+
+    if (!comment) {
+      throw new NotFoundException('Comment with this id does not exist');
+    }
     return this.commentRepository.removeComment(id, requestUser);
   }
 }

@@ -49,8 +49,6 @@ export class CommentsController {
     @Param('id') id: string,
     @Body() updateCommentDto: UpdateCommentDto,
   ) {
-    console.log(user);
-    console.log(user.id);
     return this.commentsService.update(user, +id, updateCommentDto);
   }
 
