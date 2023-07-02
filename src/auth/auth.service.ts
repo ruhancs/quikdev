@@ -25,8 +25,6 @@ export class AuthService {
 
   private jwtExtractor(request: Request): string {
     const authHeader = request.headers.authorization;
-    console.log('AUth HEADER');
-    console.log(authHeader);
 
     if (!authHeader) {
       throw new BadRequestException('No auth');
