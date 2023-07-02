@@ -18,7 +18,6 @@ export class UserRepository {
   }
 
   async findUserById(id: number): Promise<UserEntity> {
-    console.log(id);
     return this.dbContext.user.findUnique({
       where: {
         id: id,

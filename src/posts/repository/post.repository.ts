@@ -75,6 +75,9 @@ export class PostRepository {
 
   async addPostViews(id: number) {
     const post = await this.findPostById(id);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
     return this.dbContext.post.update({
       where: {
         id: id,

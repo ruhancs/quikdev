@@ -18,7 +18,6 @@ export class AuthGuardUser implements CanActivate {
     const { authorization } = request.headers;
 
     try {
-      console.log(authorization);
       const tokenPayload = this.authService.checkToken(
         (authorization ?? '').split(' ')[1],
       );

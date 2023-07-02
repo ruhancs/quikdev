@@ -22,6 +22,10 @@ export class PostsService {
   async postsDetails(id: number) {
     const postDetailed = await this.postRepository.postsDetails(id);
 
+    if (!postDetailed) {
+      throw new NotFoundException('Post not found');
+    }
+
     return {
       title: postDetailed.title,
       views: postDetailed.views,
@@ -33,9 +37,6 @@ export class PostsService {
 
   async findOne(id: number): Promise<PostEntity> {
     const post = await this.postRepository.addPostViews(id);
-    if (!post) {
-      throw new NotFoundException('Post not found');
-    }
 
     return post;
   }

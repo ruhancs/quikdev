@@ -6,13 +6,10 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SignupDto } from './dto/signup.dto';
 import { SigninDto } from './dto/signin.dto';
-import { AuthGuardUser } from 'src/common/guards/auth.guard';
-import { User } from 'src/common/decorators/user.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -39,9 +36,7 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(AuthGuardUser)
-  findAll(@User() user: any) {
-    console.log(user);
+  findAll() {
     return this.usersService.findAll();
   }
 
