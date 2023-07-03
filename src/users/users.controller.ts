@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SignupDto } from './dto/signup.dto';
@@ -16,6 +16,9 @@ import {
   ApiNotFoundResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { AuthGuardUser } from 'src/common/guards/auth.guard';
+import { User } from 'src/common/decorators/user.decorator';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -49,13 +52,12 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'data is wrong please verify' })
   @ApiNotFoundResponse({ description: 'Not found user with this id' })
   @Patch(':id')
-  update(@Param('id') id: string) {
-    return this.usersService.update(+id);
-  }
-
-  @ApiNotFoundResponse({ description: 'Not found user with this id' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @UseGuards(AuthGuardUser)
+  update(
+    @User() user: any,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(+id, updateUserDto, user);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from '../entities/user.entity';
 import { SignupDto } from '../dto/signup.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -30,6 +31,15 @@ export class UserRepository {
       where: {
         email: email,
       },
+    });
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    return this.dbContext.user.update({
+      where: {
+        id: id,
+      },
+      data: updateUserDto,
     });
   }
 }

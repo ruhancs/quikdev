@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './repository/user.repository';
 import { AuthService } from 'src/auth/auth.service';
 import { SignupDto } from './dto/signup.dto';
 import * as bcrypt from 'bcrypt';
 import { SigninDto } from './dto/signin.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -57,12 +62,13 @@ export class UsersService {
     return user;
   }
 
-  update(id: number) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto, requestUser: any) {
+    const user = await this.findOne(id);
+    if (requestUser.id !== user.id) {
+      throw new UnauthorizedException();
+    }
+    updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    return this.userRepository.updateUser(id, updateUserDto);
   }
 
   private async checkPassword(
