@@ -2,13 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentRepository } from './repository/comment.repository';
-import { MailerService } from '@nestjs-modules/mailer';
+//import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class CommentsService {
   constructor(
-    private readonly commentRepository: CommentRepository,
-    private readonly emailService: MailerService,
+    private readonly commentRepository: CommentRepository, //private readonly emailService: MailerService,
   ) {}
   async create(
     requestUser: any,
