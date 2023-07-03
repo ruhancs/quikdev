@@ -134,7 +134,7 @@ export class PostsController {
     );
     try {
       await this.imageService.uploadedImage(file, path);
-      await this.postsService.insertImageUrl(id, path);
+      await this.postsService.insertImageUrl(id, path, user);
     } catch (error) {
       throw new BadRequestException(error);
     }

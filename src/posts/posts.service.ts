@@ -68,10 +68,13 @@ export class PostsService {
     return this.postRepository.updatePost(id, updatePostDto);
   }
 
-  async insertImageUrl(postId: string, url: string) {
+  async insertImageUrl(postId: string, url: string, requestUser: any) {
     const post = await this.postRepository.findPostById(+postId);
     if (!post) {
       throw new NotFoundException('Post with this id does not exist');
+    }
+    if (requestUser.id !== post.userId) {
+      throw new UnauthorizedException();
     }
     return this.postRepository.addPostImage(postId, url);
   }
