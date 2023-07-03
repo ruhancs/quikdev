@@ -77,14 +77,13 @@ export class CommentRepository {
       },
     });
 
-    if (comment.userId !== requestUser.id || requestUser.id !== post.userId) {
-      throw new UnauthorizedException();
+    if (comment.userId === requestUser.id || requestUser.id === post.userId) {
+      return this.dbContext.comment.delete({
+        where: {
+          id: commentId,
+        },
+      });
     }
-
-    return this.dbContext.comment.delete({
-      where: {
-        id: commentId,
-      },
-    });
+    throw new UnauthorizedException();
   }
 }

@@ -2,11 +2,25 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentRepository } from './repository/comment.repository';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class CommentsService {
-  constructor(private readonly commentRepository: CommentRepository) {}
-  create(requestUser: any, postId: number, createCommentDto: CreateCommentDto) {
+  constructor(
+    private readonly commentRepository: CommentRepository,
+    private readonly emailService: MailerService,
+  ) {}
+  async create(
+    requestUser: any,
+    postId: number,
+    createCommentDto: CreateCommentDto,
+  ) {
+    //await this.emailService.sendMail({
+    //  subject: 'New comment',
+    //  to: '',
+    //  html: 'new-comment',
+    //  context: { post: postId, comentario: createCommentDto.description },
+    //});
     return this.commentRepository.create(
       createCommentDto,
       +requestUser.id,
